@@ -2,9 +2,16 @@ let myVar = '';
 let var2 = null;
 let var3 = undefined;
 let var4;
+const var5 = true;
 
-console.table([myVar, var2, var3]);
-console.table([typeof myVar, typeof var2, typeof var3, typeof var4]);
+console.table([myVar, var2, var3, var5]);
+console.table([
+  typeof myVar,
+  typeof var2,
+  typeof var3,
+  typeof var4,
+  typeof var5,
+]);
 
 let myNum = 455;
 
