@@ -49,7 +49,7 @@ for (const key in skills) {
 }
 
 /*-----------------*/
-
+//forEach() - This method(higher order function) executes a provided function once for each array element.
 const countries = [
   'India',
   'USA',
@@ -76,7 +76,7 @@ countries.forEach((val) => console.log(val));
 function printCountry(country) {
   console.log(country.toUpperCase());
 }
-forEach(printCountry);
+countries.forEach(printCountry);
 
 /*-----------------*/
 
