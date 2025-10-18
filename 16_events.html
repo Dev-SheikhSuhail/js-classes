@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Events</title>
+  </head>
+  <body style="background-color: #363535; color: aliceblue; height: 100vh">
+    <h1>Events</h1>
+    <div style="background-color: aqua; padding: 30px" id="div1">
+      <ul
+        id="images-container"
+        style="
+          list-style: none;
+          display: flex;
+          gap: 10px;
+          background-color: #834747;
+        "
+      >
+        <li>
+          <img
+            width="140px"
+            id="pt1"
+            src="https://picsum.photos/200"
+            alt="Image 1"
+          />
+        </li>
+        <li>
+          <img
+            width="140px"
+            id="pt2"
+            src="https://picsum.photos/201"
+            alt="Image 2"
+          />
+        </li>
+        <li>
+          <img
+            width="140px"
+            id="pt3"
+            src="https://picsum.photos/202"
+            alt="Image 3"
+          />
+          <!-- Inline Event Handling -> Directly adding Event handler as an HTML atrribute -->
+          <!-- <img
+            width="140px"
+            src="https://picsum.photos/202"
+            alt="Image 3"
+            onmouseout="alert('Image3 Hovered!')"
+          /> -->
+        </li>
+        <li>
+          <img
+            width="140px"
+            id="pt4"
+            src="https://picsum.photos/203"
+            alt="Image 4"
+          />
+        </li>
+        <li>
+          <img
+            width="140px"
+            id="pt5"
+            src="https://picsum.photos/204"
+            alt="Image 5"
+          />
+        </li>
+        <li></li>
+      </ul>
+      <a
+        style="color: rgb(24, 29, 33); font-size: larger"
+        href="https://google.com"
+        id="google"
+        >Google</a
+      >
+    </div>
+    <script>
+      // An event is a signal or notfication that something has happened in the browser or on the webpage.
+      // Simply, the change in the state of an object is called an event.
+      // Could be a user action, a browser action, or any other occurrence that the javaScript can detect & respond to.
+      // Common events: click, mouseover, mouseout, keydown, keyup, submit, load, unload, change, focus, blur, dblclick, input, resize, scroll, etc.
+      // Event Handler/Listener -> A function that executes when a specific event occurs. It is our code's (the element's) response to the event.
+
+      //2nd way of adding event listener/handler
+      const img = document.getElementById('pt4');
+
+      img.ondblclick = function () {
+        alert('Image4 is Double Clicked!');
+        document.getElementById('pt4').style.border = '5px solid green';
+        document.getElementById('pt4').style.borderRadius = '12px';
+      };
+      // This will overwrite the previous dblclick event handler. We can have only one event handler assigned using this method for a specific event type.
+      img.ondblclick = function () {
+        document.getElementById('pt4').style.rotate = '80deg';
+      };
+
+      img.onmouseout = function () {
+        alert('Image4 Hovered!');
+        document.getElementById('pt4').style.opacity = '0.2';
+      };
+
+      // 3rd way of adding event listener/handler -> Modern Approach-> Recommended.
+      const body = document.querySelector('body');
+      //Event Object -> e, evt, event, etc ->> It is an object that is automatically passed to the event handler function when an event occurs. It contains useful information about the event, such as the type of event, the target element, mouse coordinates, keyboard key pressed, etc. All event handlers have access to the Event Object's properties and methods to get more details about the event and control its behavior.
+      body.addEventListener('click', function (evt) {
+        console.log(evt);
+        console.log(evt.type); // Type of event, here "click"
+        console.log(evt.target); // Element that triggered the event
+        console.log(evt.currentTarget); // Element with the listener attached
+        console.log(evt.bubbles); // Does the event bubble?
+        console.log(evt.timeStamp); // When the event occurred(in milliseconds since page load)
+        console.log(evt.clientX, evt.clientY); // Mouse X and Y coordinates relative to viewport
+        console.log(evt.pageX, evt.pageY); // Mouse X and Y coordinates relative to document
+        console.log(evt.screenX, evt.screenY); // Mouse X and Y coordinates relative to screen
+        console.log('Body Event Fired');
+        // document.getElementById('pt5').style.borderRadius = '12px';
+        // document.getElementById('pt5').style.rotate = '45deg';
+      });
+      const img5 = document.getElementById('pt5');
+      img5.addEventListener('contextmenu', function () {
+        alert('Image5 Right Clicked!');
+        document.getElementById('pt5').style.border = '4px solid green';
+      });
+
+      const img3 = document.getElementById('pt3');
+      // Event Propagation -> An event travels through the DOM tree when it's triggered. When an event occurs on an element, it doesn't just affect that single element – it propagates (travels) through the DOM hierarchy in a specific order.
+      // Controlled using third parameter:
+      //                  false(default)-> Bubbling - The event starts from the target element and bubbles up to the root (window).
+      //                  true -> Capturing - The event starts from the root (window) and travels down to the target element.
+      // More advanced usage of the 3rd parameter:
+      //      element.addEventListener('click', handler, {
+      //      capture: true,        // Use capturing phase instead of bubbling
+      //      once: true,          // Fire only once, then remove automatically
+      //      passive: true        // Promise not to call preventDefault()
+      //      });
+      img3.addEventListener(
+        'click',
+        function () {
+          console.log('Image 3 Clicked');
+          document.getElementById('pt3').style.opacity = '0.5';
+        },
+        true
+      ); // Capturing
+
+      const div = document.querySelector('#div1');
+      const img2 = document.querySelector('#pt2');
+
+      div.addEventListener(
+        'click',
+        function () {
+          console.log('Div Event Fired');
+        },
+        false
+      ); // Event Bubbling(default)
+
+      // This can't be removed easily because there's no reference.The listener will stay for the lifetime of the element
+      img2.addEventListener('click', function (evt) {
+        console.log('Image Event Fired');
+        evt.stopPropagation(); //Stops the event from propagating to parent elements (during bubbling) or to child elements (during capturing).
+      });
+
+      const handler2 = function (evt) {
+        console.log('Image Event Fired-2');
+        evt.stopPropagation();
+      };
+      img2.addEventListener('click', handler2); // Named function as event handler. We can remove this listener later.
+
+      // Can add multiple listeners to the same event using this modern approach(addEventListener)
+      img2.addEventListener('click', function (evt) {
+        console.log('Image Event Fired-3');
+        evt.stopPropagation();
+      });
+      img2.addEventListener('click', function handler4(evt) {
+        console.log('Image Event Fired-4');
+        evt.stopPropagation();
+      });
+
+      const link = document.getElementById('google');
+      link.addEventListener('click', function (e) {
+        console.log('Link Clicked');
+        e.preventDefault(); // Cancels the default action that belongs to the event. It prevents the browser from executing the default behavior associated with the event(element).
+        e.stopPropagation();
+      });
+
+      // Removing Event Listeners -> To remove an event listener, the function reference must be the same.
+      // Define the handler with a name so we can reference it later
+      function handleClick() {
+        console.log('Handle Click event Fired');
+      }
+      // Add listener
+      link.addEventListener('click', handleClick);
+      // Remove listener upon Right Click
+      link.addEventListener('contextmenu', () => {
+        alert('HandleClick event Removed');
+        link.removeEventListener('click', handleClick);
+      });
+
+      // Here, we are removing 'handler2' from 'img2'
+      img2.removeEventListener('click', handler2);
+    </script>
+  </body>
+</html>
