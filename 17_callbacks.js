@@ -128,15 +128,15 @@ apiCall1(() => {
 // - Calls callback too early or too late?
 
 // Example of Inversion of Control
-//function purchaseItem(itemId, callback) {
-//   thirdPartyAPI.processPayment(itemId, callback);
-// }
+function purchaseItem(itemId, callback) {
+  thirdPartyAPI.processPayment(itemId, callback);
+}
 
-//purchaseItem(123, function (error) {
-// if (!error) {
-//chargeCustomer(); // What if this runs multiple times?
-// sendConfirmationEmail();
-// updateInventory();
-// }
-// });
+purchaseItem(123, function (error) {
+if (!error) {
+chargeCustomer(); // What if this runs multiple times?
+sendConfirmationEmail();
+updateInventory();
+}
+});
 // Here, we have no control over how thirdPartyAPI.processPayment behaves, leading to potential issues in our code.
